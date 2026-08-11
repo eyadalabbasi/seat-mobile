@@ -13,6 +13,14 @@ flutter run --flavor dev --dart-define=APP_ENV=dev --dart-define=API_BASE_URL=ht
 
 The backend URL must point to SEAT API 0.12.0 or newer. No secrets belong in Dart defines or source control; provider secrets live in platform deployment configuration.
 
+For an isolated development preview with deterministic Bahrain fixture data:
+
+```sh
+flutter run --flavor dev --dart-define=APP_ENV=dev --dart-define=ENABLE_DEV_FIXTURES=true
+```
+
+Sign in with `+97330000000` and OTP `123456`. Fixture mode is deliberately rejected for staging and production builds.
+
 ## Quality
 
 ```sh

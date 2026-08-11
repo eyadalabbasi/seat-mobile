@@ -63,6 +63,12 @@ class AppLocalizationsAr extends AppLocalizations {
   String get resendCode => 'إعادة إرسال الرمز';
 
   @override
+  String get developmentLoginHint => 'معاينة التطوير: +973 30000000';
+
+  @override
+  String get developmentOtpHint => 'رمز معاينة التطوير: 123456';
+
+  @override
   String get discoverTitle => 'اكتشف مطعمك القادم';
 
   @override

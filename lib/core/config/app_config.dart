@@ -11,6 +11,7 @@ class AppConfig {
   final AppEnvironment environment;
   final Uri apiBaseUrl;
   final bool enableFixtures;
+  bool get useFixtures => environment == AppEnvironment.dev && enableFixtures;
 
   factory AppConfig.fromEnvironment() {
     const environmentValue = String.fromEnvironment(
@@ -23,8 +24,8 @@ class AppConfig {
     );
     const fixtures = bool.fromEnvironment('ENABLE_DEV_FIXTURES');
     final environment = AppEnvironment.values.byName(environmentValue);
-    if (environment == AppEnvironment.prod && fixtures) {
-      throw StateError('Development fixtures are forbidden in production.');
+    if (environment != AppEnvironment.dev && fixtures) {
+      throw StateError('Development fixtures are forbidden outside dev.');
     }
     if (environment == AppEnvironment.prod && !url.startsWith('https://')) {
       throw StateError('Production API_BASE_URL must use HTTPS.');

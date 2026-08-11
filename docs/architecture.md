@@ -7,3 +7,8 @@ API repositories are the only application layer that knows HTTP paths. Widgets r
 Pending request detail polls every 15 seconds only while foregrounded. Polling pauses when the app leaves the foreground and refreshes on resume. Push is an abstract integration seam and pull-to-refresh remains available. The server is authoritative for all transitions.
 
 Development fixtures can only be enabled explicitly with `ENABLE_DEV_FIXTURES=true`; startup rejects them in production. No production screen depends on fixtures.
+# Development preview fixtures
+
+The composition root selects either API-backed or fixture-backed repository implementations. Fixtures are enabled only when both `APP_ENV=dev` and `ENABLE_DEV_FIXTURES=true`; startup fails if fixtures are requested in staging or production. This keeps preview behavior out of production paths and avoids feature-level conditionals.
+
+The in-memory fixture store provides a signed-in customer, five Bahrain restaurants, notifications, and examples of every V1 reservation status. Preview commands mutate that store for the running process only. A submitted request starts as `REQUESTED`, creates no real allocation, and progresses to `CONFIRMED` during detail polling solely to demonstrate the existing presentation states.

@@ -63,6 +63,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get resendCode => 'Resend code';
 
   @override
+  String get developmentLoginHint => 'Development preview: +973 30000000';
+
+  @override
+  String get developmentOtpHint => 'Development preview code: 123456';
+
+  @override
   String get discoverTitle => 'Find your next table';
 
   @override

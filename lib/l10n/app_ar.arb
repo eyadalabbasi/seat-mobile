@@ -4,7 +4,7 @@
   "home": "الرئيسية", "reservations": "الحجوزات", "notifications": "الإشعارات", "profile": "الملف الشخصي",
   "continueLabel": "متابعة", "verify": "تحقق", "retry": "حاول مرة أخرى", "cancel": "إلغاء", "save": "حفظ", "back": "رجوع",
   "chooseLanguage": "اختر لغتك", "english": "English", "arabic": "العربية",
-  "phoneTitle": "أدخل رقم هاتفك", "phoneHint": "+973 0000 0000", "otpTitle": "أدخل رمز التحقق", "resendCode": "إعادة إرسال الرمز",
+  "phoneTitle": "أدخل رقم هاتفك", "phoneHint": "+973 0000 0000", "otpTitle": "أدخل رمز التحقق", "resendCode": "إعادة إرسال الرمز", "developmentLoginHint": "معاينة التطوير: +973 30000000", "developmentOtpHint": "رمز معاينة التطوير: 123456",
   "discoverTitle": "اكتشف مطعمك القادم", "searchHint": "ابحث عن مطعم أو مطبخ أو منطقة", "tonight": "يستقبل طلبات الليلة", "recommended": "مختارات لك",
   "noRestaurants": "لم نجد مطاعم", "changeSearch": "جرّب بحثًا أو منطقة مختلفة.", "search": "بحث",
   "requestReservation": "اطلب حجزًا", "cuisine": "المطبخ", "area": "المنطقة", "openingHours": "ساعات العمل", "about": "عن المطعم",

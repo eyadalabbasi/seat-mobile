@@ -10,10 +10,17 @@ import '../features/profile/presentation/profile_screens.dart';
 import '../features/reservations/presentation/reservation_screens.dart';
 import '../l10n/app_localizations.dart';
 
-GoRouter createRouter(ValueChanged<Locale> onLocale, Locale locale) => GoRouter(
+GoRouter createRouter(
+  ValueChanged<Locale> onLocale,
+  ValueGetter<Locale> locale,
+  ValueGetter<bool> languageSelected,
+) => GoRouter(
   initialLocation: '/',
   routes: [
-    GoRoute(path: '/', builder: (_, _) => const SplashScreen()),
+    GoRoute(
+      path: '/',
+      builder: (_, _) => SplashScreen(languageSelected: languageSelected),
+    ),
     GoRoute(
       path: '/language',
       builder: (_, _) => LanguageScreen(onLocale: onLocale),
@@ -81,7 +88,7 @@ GoRouter createRouter(ValueChanged<Locale> onLocale, Locale locale) => GoRouter(
     ),
     GoRoute(
       path: '/settings',
-      builder: (_, _) => SettingsScreen(locale: locale, onLocale: onLocale),
+      builder: (_, _) => SettingsScreen(locale: locale(), onLocale: onLocale),
     ),
   ],
 );

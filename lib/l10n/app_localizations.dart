@@ -206,6 +206,18 @@ abstract class AppLocalizations {
   /// **'Resend code'**
   String get resendCode;
 
+  /// No description provided for @developmentLoginHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Development preview: +973 30000000'**
+  String get developmentLoginHint;
+
+  /// No description provided for @developmentOtpHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Development preview code: 123456'**
+  String get developmentOtpHint;
+
   /// No description provided for @discoverTitle.
   ///
   /// In en, this message translates to:

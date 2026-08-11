@@ -3,11 +3,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../core/api/api_client.dart';
+import '../../../core/config/app_config.dart';
 import '../../../l10n/app_localizations.dart';
 import '../data/auth_repository.dart';
 
 class SplashScreen extends ConsumerStatefulWidget {
-  const SplashScreen({super.key});
+  const SplashScreen({super.key, required this.languageSelected});
+  final ValueGetter<bool> languageSelected;
   @override
   ConsumerState<SplashScreen> createState() => _SplashState();
 }
@@ -19,7 +21,13 @@ class _SplashState extends ConsumerState<SplashScreen> {
     Future<void>.delayed(const Duration(milliseconds: 600), () {
       if (!mounted) return;
       final session = ref.read(sessionProvider);
-      context.go(session.value == true ? '/home' : '/language');
+      context.go(
+        session.value == true
+            ? '/home'
+            : widget.languageSelected()
+            ? '/login'
+            : '/language',
+      );
     });
   }
 
@@ -95,9 +103,18 @@ class PhoneLoginScreen extends ConsumerStatefulWidget {
 }
 
 class _PhoneState extends ConsumerState<PhoneLoginScreen> {
-  final controller = TextEditingController(text: '+973');
+  late final TextEditingController controller;
   bool loading = false;
   String? error;
+  bool get preview => ref.read(appConfigProvider).useFixtures;
+  @override
+  void initState() {
+    super.initState();
+    controller = TextEditingController(
+      text: ref.read(appConfigProvider).useFixtures ? '+97330000000' : '+973',
+    );
+  }
+
   Future<void> submit() async {
     setState(() => loading = true);
     try {
@@ -145,6 +162,13 @@ class _PhoneState extends ConsumerState<PhoneLoginScreen> {
                   ),
                 ),
               ),
+              if (preview) ...[
+                const SizedBox(height: 8),
+                Text(
+                  l.developmentLoginHint,
+                  style: Theme.of(context).textTheme.bodySmall,
+                ),
+              ],
               const Spacer(),
               FilledButton(
                 onPressed: loading ? null : submit,
@@ -171,9 +195,18 @@ class OtpScreen extends ConsumerStatefulWidget {
 }
 
 class _OtpState extends ConsumerState<OtpScreen> {
-  final controller = TextEditingController();
+  late final TextEditingController controller;
   bool loading = false;
   String? error;
+  bool get preview => ref.read(appConfigProvider).useFixtures;
+  @override
+  void initState() {
+    super.initState();
+    controller = TextEditingController(
+      text: ref.read(appConfigProvider).useFixtures ? '123456' : '',
+    );
+  }
+
   Future<void> submit() async {
     setState(() => loading = true);
     try {
@@ -222,6 +255,11 @@ class _OtpState extends ConsumerState<OtpScreen> {
                   decoration: InputDecoration(errorText: error),
                 ),
               ),
+              if (preview)
+                Text(
+                  l.developmentOtpHint,
+                  style: Theme.of(context).textTheme.bodySmall,
+                ),
               const Spacer(),
               FilledButton(
                 onPressed: loading || controller.text.length != 6
