@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../../../core/api/api_client.dart';
 import '../../../core/config/app_config.dart';
 import '../../../l10n/app_localizations.dart';
+import '../../../app/theme/seat_theme.dart';
 import '../data/auth_repository.dart';
 
 class SplashScreen extends ConsumerStatefulWidget {
@@ -40,9 +41,10 @@ class _SplashState extends ConsumerState<SplashScreen> {
         child: const Text(
           'SEAT',
           style: TextStyle(
+            color: SeatColors.terracotta,
             fontSize: 42,
-            fontWeight: FontWeight.w700,
-            letterSpacing: 5,
+            fontWeight: FontWeight.w600,
+            letterSpacing: 7,
           ),
         ),
       ),

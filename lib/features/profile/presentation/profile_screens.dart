@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../core/widgets/seat_widgets.dart';
+import '../../../app/theme/seat_theme.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../auth/data/auth_repository.dart';
 import '../data/profile_repository.dart';
@@ -34,11 +35,19 @@ class ProfileScreen extends ConsumerWidget {
           Text(
             user.displayName ?? user.phone,
             textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.headlineMedium,
+            style: Theme.of(
+              context,
+            ).textTheme.headlineMedium?.copyWith(color: SeatColors.charcoal),
           ),
           Directionality(
             textDirection: TextDirection.ltr,
-            child: Text(user.phone, textAlign: TextAlign.center),
+            child: Text(
+              user.phone,
+              textAlign: TextAlign.center,
+              style: Theme.of(
+                context,
+              ).textTheme.bodyLarge?.copyWith(color: SeatColors.secondary),
+            ),
           ),
           const SizedBox(height: 28),
           ListTile(
@@ -52,18 +61,6 @@ class ProfileScreen extends ConsumerWidget {
             leading: const Icon(Icons.settings_outlined),
             title: Text(l.settings),
             onTap: () => context.push('/settings'),
-          ),
-          const Divider(),
-          ListTile(
-            minTileHeight: 56,
-            leading: const Icon(Icons.logout),
-            title: Text(l.logout),
-            textColor: Theme.of(context).colorScheme.error,
-            iconColor: Theme.of(context).colorScheme.error,
-            onTap: () async {
-              await ref.read(sessionProvider.notifier).logout();
-              if (context.mounted) context.go('/login');
-            },
           ),
         ],
       ),
@@ -185,6 +182,8 @@ class _SettingsState extends ConsumerState<SettingsScreen> {
           ListTile(
             title: Text(l.logout),
             leading: const Icon(Icons.logout),
+            textColor: SeatColors.destructive,
+            iconColor: SeatColors.destructive,
             onTap: () async {
               await ref.read(sessionProvider.notifier).logout();
               if (context.mounted) context.go('/login');

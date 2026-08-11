@@ -5,6 +5,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../core/api/api_client.dart';
+import '../../../app/theme/seat_theme.dart';
+import '../../../core/formatting/seat_date_time.dart';
 import '../../../core/models/models.dart';
 import '../../../core/widgets/seat_widgets.dart';
 import '../../../l10n/app_localizations.dart';
@@ -58,62 +60,70 @@ class _RequestState extends ConsumerState<RequestReservationScreen> {
       body: ListView(
         padding: const EdgeInsets.all(20),
         children: [
-          ListTile(
-            minTileHeight: 60,
-            title: Text(l.date),
-            subtitle: Text(
-              date == null
-                  ? '—'
-                  : MaterialLocalizations.of(context).formatFullDate(date!),
+          Card(
+            child: ListTile(
+              minTileHeight: 60,
+              title: Text(l.date),
+              subtitle: Text(
+                date == null
+                    ? '—'
+                    : MaterialLocalizations.of(context).formatFullDate(date!),
+              ),
+              trailing: const Icon(Icons.calendar_today),
+              onTap: () async {
+                final value = await showDatePicker(
+                  context: context,
+                  firstDate: DateTime.now(),
+                  lastDate: DateTime.now().add(const Duration(days: 365)),
+                );
+                if (value != null) setState(() => date = value);
+              },
             ),
-            trailing: const Icon(Icons.calendar_today),
-            onTap: () async {
-              final value = await showDatePicker(
-                context: context,
-                firstDate: DateTime.now(),
-                lastDate: DateTime.now().add(const Duration(days: 365)),
-              );
-              if (value != null) setState(() => date = value);
-            },
           ),
-          ListTile(
-            minTileHeight: 60,
-            title: Text(l.preferredTime),
-            subtitle: Text(time?.format(context) ?? '—'),
-            trailing: const Icon(Icons.schedule),
-            onTap: () async {
-              final value = await showTimePicker(
-                context: context,
-                initialTime: TimeOfDay.now(),
-              );
-              if (value != null) setState(() => time = value);
-            },
+          const SizedBox(height: 10),
+          Card(
+            child: ListTile(
+              minTileHeight: 60,
+              title: Text(l.preferredTime),
+              subtitle: Text(time?.format(context) ?? '—'),
+              trailing: const Icon(Icons.schedule),
+              onTap: () async {
+                final value = await showTimePicker(
+                  context: context,
+                  initialTime: TimeOfDay.now(),
+                );
+                if (value != null) setState(() => time = value);
+              },
+            ),
           ),
-          ListTile(
-            minTileHeight: 60,
-            title: Text(l.partySize),
-            trailing: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                IconButton(
-                  onPressed: party > 1 ? () => setState(() => party--) : null,
-                  icon: const Icon(Icons.remove),
-                  tooltip: 'Decrease',
-                ),
-                Semantics(
-                  liveRegion: true,
-                  label: '$party',
-                  child: Text(
-                    '$party',
-                    style: Theme.of(context).textTheme.titleLarge,
+          const SizedBox(height: 10),
+          Card(
+            child: ListTile(
+              minTileHeight: 60,
+              title: Text(l.partySize),
+              trailing: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  IconButton.filledTonal(
+                    onPressed: party > 1 ? () => setState(() => party--) : null,
+                    icon: const Icon(Icons.remove),
+                    tooltip: 'Decrease',
                   ),
-                ),
-                IconButton(
-                  onPressed: () => setState(() => party++),
-                  icon: const Icon(Icons.add),
-                  tooltip: 'Increase',
-                ),
-              ],
+                  Semantics(
+                    liveRegion: true,
+                    label: '$party',
+                    child: Text(
+                      '$party',
+                      style: Theme.of(context).textTheme.titleLarge,
+                    ),
+                  ),
+                  IconButton.filledTonal(
+                    onPressed: () => setState(() => party++),
+                    icon: const Icon(Icons.add),
+                    tooltip: 'Increase',
+                  ),
+                ],
+              ),
             ),
           ),
           const SizedBox(height: 16),
@@ -207,28 +217,30 @@ class ReservationCard extends StatelessWidget {
       borderRadius: BorderRadius.circular(20),
       child: Padding(
         padding: const EdgeInsets.all(16),
-        child: Row(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    reservation.restaurantName.isEmpty
-                        ? 'SEAT'
-                        : reservation.restaurantName,
-                    style: Theme.of(context).textTheme.titleLarge,
-                  ),
-                  const SizedBox(height: 6),
-                  Directionality(
-                    textDirection: TextDirection.ltr,
-                    child: Text(
-                      '${reservation.requestedStartsAt.toLocal()} · ${reservation.partySize}',
-                    ),
-                  ),
-                ],
-              ),
+            Text(
+              reservation.restaurantName.isEmpty
+                  ? 'SEAT'
+                  : reservation.restaurantName,
+              style: Theme.of(
+                context,
+              ).textTheme.titleLarge?.copyWith(color: SeatColors.charcoal),
             ),
+            const SizedBox(height: 8),
+            Text(
+              SeatDateTime.dateTime(context, reservation.requestedStartsAt),
+              style: Theme.of(
+                context,
+              ).textTheme.bodyMedium?.copyWith(color: SeatColors.secondary),
+            ),
+            const SizedBox(height: 4),
+            Text(
+              '${AppLocalizations.of(context).partySize}: ${reservation.partySize}',
+              style: Theme.of(context).textTheme.bodySmall,
+            ),
+            const SizedBox(height: 12),
             StatusChip(status: reservation.status),
           ],
         ),
@@ -338,10 +350,14 @@ class _DetailState extends ConsumerState<ReservationDetailScreen>
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.headlineLarge,
           ),
-          const SizedBox(height: 8),
-          if (r.status == ReservationStatus.requested ||
-              r.status == ReservationStatus.underReview)
-            Text(l.notConfirmedYet, textAlign: TextAlign.center),
+          const SizedBox(height: 10),
+          Text(
+            _body(l, r),
+            textAlign: TextAlign.center,
+            style: Theme.of(
+              context,
+            ).textTheme.bodyLarge?.copyWith(color: SeatColors.secondary),
+          ),
           const SizedBox(height: 24),
           Card(
             child: Padding(
@@ -355,16 +371,20 @@ class _DetailState extends ConsumerState<ReservationDetailScreen>
                   ),
                   const SizedBox(height: 12),
                   Directionality(
-                    textDirection: TextDirection.ltr,
-                    child: Text('${r.requestedStartsAt.toLocal()}'),
+                    textDirection: Directionality.of(context),
+                    child: Text(
+                      SeatDateTime.dateTime(context, r.requestedStartsAt),
+                    ),
                   ),
                   Text('${l.partySize}: ${r.partySize}'),
                   if (r.alternativeStartsAt != null) ...[
                     const Divider(height: 32),
                     Text(l.requestedTime),
                     Directionality(
-                      textDirection: TextDirection.ltr,
-                      child: Text('${r.requestedStartsAt.toLocal()}'),
+                      textDirection: Directionality.of(context),
+                      child: Text(
+                        SeatDateTime.dateTime(context, r.requestedStartsAt),
+                      ),
                     ),
                     const SizedBox(height: 12),
                     Text(
@@ -372,8 +392,10 @@ class _DetailState extends ConsumerState<ReservationDetailScreen>
                       style: Theme.of(context).textTheme.titleLarge,
                     ),
                     Directionality(
-                      textDirection: TextDirection.ltr,
-                      child: Text('${r.alternativeStartsAt!.toLocal()}'),
+                      textDirection: Directionality.of(context),
+                      child: Text(
+                        SeatDateTime.dateTime(context, r.alternativeStartsAt!),
+                      ),
                     ),
                   ],
                 ],
@@ -432,5 +454,24 @@ class _DetailState extends ConsumerState<ReservationDetailScreen>
     ReservationStatus.declined => l.declinedTitle,
     ReservationStatus.expired => l.expiredTitle,
     _ => statusLabel(l, s),
+  };
+
+  String _body(AppLocalizations l, Reservation r) => switch (r.status) {
+    ReservationStatus.requested =>
+      Localizations.localeOf(context).languageCode == 'ar'
+          ? 'سنخبرك فور رد المطعم.'
+          : "We'll let you know as soon as they respond.",
+    ReservationStatus.underReview =>
+      Localizations.localeOf(context).languageCode == 'ar'
+          ? 'المطعم يراجع طلبك الآن.'
+          : 'The restaurant is reviewing your request.',
+    ReservationStatus.confirmed =>
+      Localizations.localeOf(context).languageCode == 'ar'
+          ? 'تم تأكيد حجزك في ${r.restaurantName}.'
+          : 'Your reservation at ${r.restaurantName} is confirmed.',
+    ReservationStatus.alternativeProposed => l.alternativeTitle,
+    ReservationStatus.declined => l.declinedTitle,
+    ReservationStatus.expired => l.expiredTitle,
+    _ => statusLabel(l, r.status),
   };
 }

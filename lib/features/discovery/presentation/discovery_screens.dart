@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../../../core/models/models.dart';
 import '../../../core/widgets/seat_widgets.dart';
 import '../../../l10n/app_localizations.dart';
+import '../../../app/theme/seat_theme.dart';
 import '../data/discovery_repository.dart';
 
 class HomeScreen extends ConsumerWidget {
@@ -22,6 +23,15 @@ class HomeScreen extends ConsumerWidget {
             padding: const EdgeInsets.fromLTRB(20, 24, 20, 12),
             sliver: SliverList.list(
               children: [
+                Text(
+                  Localizations.localeOf(context).languageCode == 'ar'
+                      ? 'مساء الخير'
+                      : 'Good evening',
+                  style: Theme.of(
+                    context,
+                  ).textTheme.bodyLarge?.copyWith(color: SeatColors.secondary),
+                ),
+                const SizedBox(height: 4),
                 Text(
                   l.discoverTitle,
                   style: Theme.of(context).textTheme.headlineLarge,
@@ -128,7 +138,14 @@ class _SearchState extends ConsumerState<SearchScreen> {
             if (loading) const LinearProgressIndicator(),
             Expanded(
               child: results.isEmpty
-                  ? Center(child: Text(l.changeSearch))
+                  ? Center(
+                      child: Text(
+                        l.changeSearch,
+                        style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                          color: SeatColors.secondary,
+                        ),
+                      ),
+                    )
                   : ListView.separated(
                       itemCount: results.length,
                       itemBuilder: (_, i) => RestaurantCard(
@@ -173,6 +190,10 @@ class RestaurantDetailScreen extends ConsumerWidget {
           );
         }
         final (r, branches) = snapshot.data!;
+        final branch = branches.isEmpty ? null : branches.first;
+        final branchId = branch?['id'] ?? branch?['branchId'];
+        final branchName = branch?['name'] ?? branch?['branchName'];
+        final opening = branch?['openingHours'] ?? branch?['hours'];
         return Scaffold(
           body: CustomScrollView(
             slivers: [
@@ -180,8 +201,7 @@ class RestaurantDetailScreen extends ConsumerWidget {
                 expandedHeight: 260,
                 pinned: true,
                 flexibleSpace: FlexibleSpaceBar(
-                  title: Text(r.name),
-                  background: RestaurantCard(restaurant: r, onTap: () {}),
+                  background: _RestaurantHero(name: r.name),
                 ),
               ),
               SliverPadding(
@@ -189,8 +209,15 @@ class RestaurantDetailScreen extends ConsumerWidget {
                 sliver: SliverList.list(
                   children: [
                     Text(
+                      r.name,
+                      style: Theme.of(context).textTheme.headlineLarge,
+                    ),
+                    const SizedBox(height: 6),
+                    Text(
                       '${r.cuisine} · ${r.area}',
-                      style: Theme.of(context).textTheme.titleLarge,
+                      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                        color: SeatColors.secondary,
+                      ),
                     ),
                     const SizedBox(height: 20),
                     Text(
@@ -198,7 +225,38 @@ class RestaurantDetailScreen extends ConsumerWidget {
                       style: Theme.of(context).textTheme.headlineMedium,
                     ),
                     const SizedBox(height: 8),
-                    Text(r.description.isEmpty ? '—' : r.description),
+                    if (r.description.isNotEmpty) Text(r.description),
+                    if (branchName != null || opening != null) ...[
+                      const SizedBox(height: 24),
+                      Card(
+                        child: Padding(
+                          padding: const EdgeInsets.all(18),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              if (branchName != null)
+                                Text(
+                                  '$branchName',
+                                  style: Theme.of(context).textTheme.titleLarge,
+                                ),
+                              if (opening != null) ...[
+                                const SizedBox(height: 8),
+                                Row(
+                                  children: [
+                                    const Icon(
+                                      Icons.schedule_outlined,
+                                      size: 19,
+                                    ),
+                                    const SizedBox(width: 8),
+                                    Expanded(child: Text('$opening')),
+                                  ],
+                                ),
+                              ],
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
                     const SizedBox(height: 100),
                   ],
                 ),
@@ -208,16 +266,44 @@ class RestaurantDetailScreen extends ConsumerWidget {
           bottomNavigationBar: SafeArea(
             minimum: const EdgeInsets.all(16),
             child: FilledButton(
-              onPressed: branches.isEmpty
+              onPressed: branchId == null
                   ? null
                   : () => context.push(
-                      '/restaurants/$id/request?branchId=${branches.first['id'] ?? branches.first['branchId']}',
+                      '/restaurants/$id/request?branchId=$branchId',
                     ),
-              child: Text(l.requestReservation),
+              child: Text(l.requestTitle),
             ),
           ),
         );
       },
     );
   }
+}
+
+class _RestaurantHero extends StatelessWidget {
+  const _RestaurantHero({required this.name});
+  final String name;
+
+  @override
+  Widget build(BuildContext context) => DecoratedBox(
+    decoration: const BoxDecoration(
+      gradient: LinearGradient(
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+        colors: [Color(0xFFD7BEA8), Color(0xFF704A3D)],
+      ),
+    ),
+    child: Align(
+      alignment: AlignmentDirectional.bottomStart,
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(24, 24, 24, 34),
+        child: Text(
+          name,
+          style: Theme.of(
+            context,
+          ).textTheme.headlineMedium?.copyWith(color: Colors.white),
+        ),
+      ),
+    ),
+  );
 }

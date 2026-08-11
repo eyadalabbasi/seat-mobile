@@ -52,7 +52,7 @@ class _SeatAppState extends ConsumerState<SeatApp> {
   @override
   Widget build(BuildContext context) {
     if (!_ready || _router == null) {
-      return const ColoredBox(color: Color(0xFFF8F3EA));
+      return const ColoredBox(color: SeatColors.cream);
     }
     return MaterialApp.router(
       title: 'SEAT',

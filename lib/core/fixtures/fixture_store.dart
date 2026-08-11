@@ -80,7 +80,14 @@ class FixtureStore {
     int day, {
     bool alternative = false,
   }) {
-    final requested = DateTime.now().add(Duration(days: day, hours: 2));
+    final now = DateTime.now();
+    final requested = DateTime(
+      now.year,
+      now.month,
+      now.day + day,
+      18 + day % 3,
+      day.isEven ? 30 : 15,
+    );
     return Reservation(
       id: id,
       status: status,

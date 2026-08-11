@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
+import '../../app/theme/seat_theme.dart';
 import '../../l10n/app_localizations.dart';
 import '../api/api_client.dart';
 import '../models/models.dart';
@@ -73,19 +74,16 @@ class RestaurantCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(
-              height: 150,
+              height: 190,
               width: double.infinity,
               child: restaurant.imageUrl == null
-                  ? const ColoredBox(
-                      color: Color(0xFFE9DDD0),
-                      child: Icon(Icons.restaurant, size: 44),
-                    )
+                  ? const _RestaurantPlaceholder()
                   : CachedNetworkImage(
                       imageUrl: restaurant.imageUrl!,
                       fit: BoxFit.cover,
                       placeholder: (_, _) =>
                           const ColoredBox(color: Color(0xFFE9DDD0)),
-                      errorWidget: (_, _, _) => const Icon(Icons.restaurant),
+                      errorWidget: (_, _, _) => const _RestaurantPlaceholder(),
                     ),
             ),
             Padding(
@@ -95,12 +93,47 @@ class RestaurantCard extends StatelessWidget {
                 children: [
                   Text(
                     restaurant.name,
-                    style: Theme.of(context).textTheme.titleLarge,
+                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                      color: SeatColors.charcoal,
+                    ),
                   ),
                   const SizedBox(height: 4),
                   Text(
                     '${restaurant.cuisine} · ${restaurant.area}',
-                    style: Theme.of(context).textTheme.bodyMedium,
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: SeatColors.secondary,
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Row(
+                    children: [
+                      Icon(
+                        restaurant.isOpen
+                            ? Icons.check_circle_outline
+                            : Icons.schedule_outlined,
+                        size: 17,
+                        color: restaurant.isOpen
+                            ? SeatColors.green
+                            : SeatColors.warning,
+                      ),
+                      const SizedBox(width: 6),
+                      Text(
+                        restaurant.isOpen
+                            ? (Localizations.localeOf(context).languageCode ==
+                                      'ar'
+                                  ? 'يستقبل طلبات الحجز'
+                                  : 'Accepting requests')
+                            : (Localizations.localeOf(context).languageCode ==
+                                      'ar'
+                                  ? 'مغلق حالياً'
+                                  : 'Currently closed'),
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: restaurant.isOpen
+                              ? SeatColors.green
+                              : SeatColors.warning,
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
@@ -108,6 +141,36 @@ class RestaurantCard extends StatelessWidget {
           ],
         ),
       ),
+    ),
+  );
+}
+
+class _RestaurantPlaceholder extends StatelessWidget {
+  const _RestaurantPlaceholder();
+
+  @override
+  Widget build(BuildContext context) => DecoratedBox(
+    decoration: const BoxDecoration(
+      gradient: LinearGradient(
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+        colors: [Color(0xFFDAC4AF), Color(0xFF8C5F4F)],
+      ),
+    ),
+    child: Stack(
+      children: [
+        PositionedDirectional(
+          start: 22,
+          bottom: 20,
+          child: Text(
+            'SEAT',
+            style: Theme.of(context).textTheme.titleLarge?.copyWith(
+              color: Colors.white,
+              letterSpacing: 3,
+            ),
+          ),
+        ),
+      ],
     ),
   );
 }
@@ -132,15 +195,28 @@ class StatusChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final label = statusLabel(AppLocalizations.of(context), status);
+    final color = switch (status) {
+      ReservationStatus.confirmed ||
+      ReservationStatus.checkedIn ||
+      ReservationStatus.completed => SeatColors.green,
+      ReservationStatus.declined ||
+      ReservationStatus.cancelled ||
+      ReservationStatus.noShow => SeatColors.destructive,
+      ReservationStatus.expired => SeatColors.secondary,
+      _ => SeatColors.warning,
+    };
     return Semantics(
       label: label,
       child: Chip(
-        label: Text(label),
+        backgroundColor: color.withValues(alpha: .11),
+        side: BorderSide.none,
+        label: Text(label, style: TextStyle(color: color)),
         avatar: Icon(
           status == ReservationStatus.confirmed
               ? Icons.check_circle
               : Icons.schedule,
           size: 18,
+          color: color,
         ),
       ),
     );
