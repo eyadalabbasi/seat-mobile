@@ -1,0 +1,20 @@
+{
+  "@@locale": "en",
+  "appName": "SEAT",
+  "home": "Home", "reservations": "Reservations", "notifications": "Notifications", "profile": "Profile",
+  "continueLabel": "Continue", "verify": "Verify", "retry": "Try again", "cancel": "Cancel", "save": "Save", "back": "Back",
+  "chooseLanguage": "Choose your language", "english": "English", "arabic": "العربية",
+  "phoneTitle": "Enter your mobile number", "phoneHint": "+973 0000 0000", "otpTitle": "Enter the verification code", "resendCode": "Resend code",
+  "discoverTitle": "Find your next table", "searchHint": "Search restaurants, cuisine or area", "tonight": "Accepting requests tonight", "recommended": "Recommended for you",
+  "noRestaurants": "No restaurants found", "changeSearch": "Try a different search or area.", "search": "Search",
+  "requestReservation": "Request Reservation", "cuisine": "Cuisine", "area": "Area", "openingHours": "Opening hours", "about": "About",
+  "requestTitle": "Request a reservation", "date": "Date", "preferredTime": "Preferred time", "partySize": "Guests", "specialRequest": "Special request (optional)",
+  "requestSent": "Request sent", "waitingRestaurant": "Waiting for the restaurant", "notConfirmedYet": "This is not confirmed yet.", "viewRequest": "View request",
+  "alternativeTitle": "The restaurant suggested another time", "requestedTime": "Your requested time", "suggestedTime": "Suggested time", "accept": "Accept", "decline": "Decline",
+  "confirmedTitle": "You're confirmed", "confirmedBody": "We’ll see you there.", "declinedTitle": "The restaurant could not accept this time", "expiredTitle": "Request expired", "tryAnotherTime": "Try another time",
+  "upcoming": "Upcoming", "past": "Past", "noReservations": "No reservations yet", "findRestaurants": "Find restaurants", "reservationDetails": "Reservation details",
+  "cancelRequest": "Cancel Request", "cancelReservation": "Cancel Reservation", "noNotifications": "No notifications yet", "markRead": "Mark as read",
+  "settings": "Settings", "language": "Language", "notificationPreferences": "Notification preferences", "logout": "Log out", "editProfile": "Edit profile", "displayName": "Display name", "email": "Email", "verifiedMobile": "Verified mobile",
+  "offline": "You're offline. Check your connection and try again.", "serverError": "SEAT is temporarily unavailable.", "invalidOtp": "That code is invalid or expired.", "submissionFailed": "We couldn't send your request. Nothing was confirmed.", "timeUnavailable": "That time is no longer available.", "sessionExpired": "Your session expired. Please sign in again.",
+  "statusRequested": "Waiting for restaurant", "statusUnderReview": "Under review", "statusAlternative": "New time offered", "statusConfirmed": "Confirmed", "statusCheckedIn": "Checked in", "statusCompleted": "Completed", "statusDeclined": "Declined", "statusCancelled": "Cancelled", "statusExpired": "Expired", "statusNoShow": "No show"
+}

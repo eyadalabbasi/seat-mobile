@@ -1,0 +1,20 @@
+{
+  "@@locale": "ar",
+  "appName": "SEAT",
+  "home": "الرئيسية", "reservations": "الحجوزات", "notifications": "الإشعارات", "profile": "الملف الشخصي",
+  "continueLabel": "متابعة", "verify": "تحقق", "retry": "حاول مرة أخرى", "cancel": "إلغاء", "save": "حفظ", "back": "رجوع",
+  "chooseLanguage": "اختر لغتك", "english": "English", "arabic": "العربية",
+  "phoneTitle": "أدخل رقم هاتفك", "phoneHint": "+973 0000 0000", "otpTitle": "أدخل رمز التحقق", "resendCode": "إعادة إرسال الرمز",
+  "discoverTitle": "اكتشف مطعمك القادم", "searchHint": "ابحث عن مطعم أو مطبخ أو منطقة", "tonight": "يستقبل طلبات الليلة", "recommended": "مختارات لك",
+  "noRestaurants": "لم نجد مطاعم", "changeSearch": "جرّب بحثًا أو منطقة مختلفة.", "search": "بحث",
+  "requestReservation": "اطلب حجزًا", "cuisine": "المطبخ", "area": "المنطقة", "openingHours": "ساعات العمل", "about": "عن المطعم",
+  "requestTitle": "اطلب حجزًا", "date": "التاريخ", "preferredTime": "الوقت المفضّل", "partySize": "عدد الضيوف", "specialRequest": "طلب خاص (اختياري)",
+  "requestSent": "تم إرسال الطلب", "waitingRestaurant": "بانتظار رد المطعم", "notConfirmedYet": "الحجز غير مؤكد حتى الآن.", "viewRequest": "عرض الطلب",
+  "alternativeTitle": "اقترح المطعم وقتًا آخر", "requestedTime": "الوقت الذي طلبته", "suggestedTime": "الوقت المقترح", "accept": "قبول", "decline": "رفض",
+  "confirmedTitle": "تم تأكيد حجزك", "confirmedBody": "ننتظرك هناك.", "declinedTitle": "تعذّر على المطعم قبول هذا الوقت", "expiredTitle": "انتهت مهلة الطلب", "tryAnotherTime": "جرّب وقتًا آخر",
+  "upcoming": "القادمة", "past": "السابقة", "noReservations": "لا توجد حجوزات حتى الآن", "findRestaurants": "اكتشف المطاعم", "reservationDetails": "تفاصيل الحجز",
+  "cancelRequest": "إلغاء الطلب", "cancelReservation": "إلغاء الحجز", "noNotifications": "لا توجد إشعارات حتى الآن", "markRead": "تحديد كمقروء",
+  "settings": "الإعدادات", "language": "اللغة", "notificationPreferences": "إعدادات الإشعارات", "logout": "تسجيل الخروج", "editProfile": "تعديل الملف", "displayName": "الاسم", "email": "البريد الإلكتروني", "verifiedMobile": "رقم هاتف موثّق",
+  "offline": "أنت غير متصل. تحقق من اتصالك وحاول مرة أخرى.", "serverError": "خدمة SEAT غير متاحة مؤقتًا.", "invalidOtp": "الرمز غير صحيح أو انتهت صلاحيته.", "submissionFailed": "تعذّر إرسال طلبك. لم يتم تأكيد أي حجز.", "timeUnavailable": "هذا الوقت لم يعد متاحًا.", "sessionExpired": "انتهت جلستك. سجل الدخول مرة أخرى.",
+  "statusRequested": "بانتظار المطعم", "statusUnderReview": "قيد المراجعة", "statusAlternative": "تم اقتراح وقت جديد", "statusConfirmed": "مؤكد", "statusCheckedIn": "تم تسجيل الحضور", "statusCompleted": "مكتمل", "statusDeclined": "مرفوض", "statusCancelled": "ملغي", "statusExpired": "منتهي", "statusNoShow": "لم يحضر"
+}

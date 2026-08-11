@@ -1,0 +1,24 @@
+# SEAT Mobile
+
+Production Flutter customer application for SEAT V1 restaurant discovery and reservation requests in Bahrain. This repository contains only the customer app; restaurant staff remains a separate future application.
+
+## Run locally
+
+Install Flutter 3.44.9 stable, then:
+
+```sh
+flutter pub get
+flutter run --flavor dev --dart-define=APP_ENV=dev --dart-define=API_BASE_URL=http://10.0.2.2:3000
+```
+
+The backend URL must point to SEAT API 0.12.0 or newer. No secrets belong in Dart defines or source control; provider secrets live in platform deployment configuration.
+
+## Quality
+
+```sh
+flutter analyze
+flutter test
+flutter build apk --flavor dev --dart-define=APP_ENV=dev
+```
+
+See [architecture](docs/architecture.md), [API integration](docs/api-integration.md), [localization](docs/localization.md), and [build/release](docs/build-and-release.md).
