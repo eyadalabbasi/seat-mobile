@@ -24,7 +24,8 @@ class ApiAuthRepository implements AuthRepository {
       '/api/v1/auth/otp/verify',
       data: {'challengeId': challengeId, 'code': code},
     );
-    await _tokens.save('${data['accessToken']}', '${data['refreshToken']}');
+    final tokens = Map<String, Object?>.from(data['tokens'] as Map);
+    await _tokens.save('${tokens['accessToken']}', '${tokens['refreshToken']}');
   }
 
   @override
