@@ -206,7 +206,19 @@ class _OtpState extends ConsumerState<OtpScreen> {
     super.initState();
     controller = TextEditingController(
       text: ref.read(appConfigProvider).useFixtures ? '123456' : '',
-    );
+    )..addListener(_refreshOtpAction);
+  }
+
+  void _refreshOtpAction() {
+    if (mounted) setState(() {});
+  }
+
+  @override
+  void dispose() {
+    controller
+      ..removeListener(_refreshOtpAction)
+      ..dispose();
+    super.dispose();
   }
 
   Future<void> submit() async {
