@@ -17,6 +17,12 @@ For an isolated development preview with deterministic Bahrain fixture data:
 
 ```sh
 flutter run --flavor dev --dart-define=APP_ENV=dev --dart-define=ENABLE_DEV_FIXTURES=true
+
+Staging, with fixtures disabled:
+
+```bash
+flutter run --flavor dev --dart-define-from-file=dart_defines/staging.json
+```
 ```
 
 Sign in with `+97330000000` and OTP `123456`. Fixture mode is deliberately rejected for staging and production builds.
