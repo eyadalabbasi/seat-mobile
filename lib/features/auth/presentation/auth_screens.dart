@@ -34,18 +34,15 @@ class _SplashState extends ConsumerState<SplashScreen> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
+    backgroundColor: SeatColors.terracotta,
     body: Center(
       child: Semantics(
         label: 'SEAT',
         header: true,
-        child: const Text(
-          'SEAT',
-          style: TextStyle(
-            color: SeatColors.terracotta,
-            fontSize: 42,
-            fontWeight: FontWeight.w600,
-            letterSpacing: 7,
-          ),
+        child: Image.asset(
+          'assets/branding/seat-mark-transparent.png',
+          width: 180,
+          height: 180,
         ),
       ),
     ),
