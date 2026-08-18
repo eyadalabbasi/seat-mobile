@@ -75,7 +75,7 @@ class ApiClient {
         data: {'refreshToken': token},
         options: Options(extra: {'retried': true}),
       );
-      final data = _unwrapMap(response.data);
+      final data = unwrapResponseMap(response.data);
       await _tokens.save('${data['accessToken']}', '${data['refreshToken']}');
       completer.complete();
     } catch (error, stack) {
@@ -113,7 +113,7 @@ class ApiClient {
     Future<Response<Map<String, Object?>>> Function() request,
   ) async {
     try {
-      return _unwrapMap((await request()).data);
+      return unwrapResponseMap((await request()).data);
     } on DioException catch (error) {
       final body = error.response?.data;
       final errorBody = body?['error'];
@@ -129,11 +129,12 @@ class ApiClient {
   }
 }
 
-Map<String, Object?> _unwrapMap(Map<String, Object?>? body) {
-  final value = body?['data'] ?? body ?? <String, Object?>{};
-  return value is Map<String, Object?>
-      ? value
-      : Map<String, Object?>.from(value as Map);
+Map<String, Object?> unwrapResponseMap(Map<String, Object?>? body) {
+  if (body == null) return <String, Object?>{};
+  final value = body['data'];
+  if (value is Map<String, Object?>) return value;
+  if (value is Map) return Map<String, Object?>.from(value);
+  return body;
 }
 
 List<Object?> unwrapItems(Map<String, Object?> body) {
